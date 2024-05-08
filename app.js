@@ -3,8 +3,10 @@ const express = require("express");
 const notFoundMiddler = require("./middler/not_found_middler");
 const gobalErrorMiddler = require("./middler/gobal_error_middler");
 const mainRouter = require("./router/main_router");
+const dotenv = require("dotenv");
 
 const app = express();
+dotenv.config();
 
 app.use(express.json());
 
