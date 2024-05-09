@@ -1,7 +1,7 @@
 const express = require("express");
 const { imageUpload } = require("../multer/file_upload");
 
-const { getUser, createUser } = require("../controller/user_controller");
+const { getUser, createUser,getSingleUser } = require("../controller/user_controller");
 const {
   peopleValidator,
   peopleValidatorHandler,
@@ -10,6 +10,7 @@ const {
 const router = express.Router();
 
 router.get("/", getUser);
+router.get("/:id", getSingleUser);
 router.post(
   "/",
   imageUpload,

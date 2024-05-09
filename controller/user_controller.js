@@ -1,6 +1,8 @@
 const express = require("express");
 const UserModel = require("../model/people");
 const createError = require("http-errors");
+const { hash, checkPassword } = require("../services/hash_password");
+const password = require("../services/hash_password");
 
 const user = express();
 
@@ -21,13 +23,34 @@ user.getUser = async (req, res) => {
   }
 };
 
+user.getSingleUser = async (req, res) => {
+  try {
+    const user = await UserModel.findOne({ _id: req.params.id });
+
+    res.json({
+      Status: true,
+      Message: "User rectrive successfully",
+      data: user,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      Status: false,
+      error: err,
+      Message: "Internal server error",
+    });
+  }
+};
+
 user.createUser = async (req, res) => {
   try {
+    const hashPassword = await hash(req.body.password);
     if (req.files && req.files.length > 0) {
       const { filename } = req.files[0];
       console.log(filename);
       const newUser = new UserModel({
         ...req.body,
+        password: hashPassword,
         image: filename,
       });
       await newUser.save();
