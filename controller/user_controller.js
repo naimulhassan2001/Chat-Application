@@ -27,6 +27,8 @@ user.getSingleUser = async (req, res) => {
   try {
     const user = await UserModel.findOne({ _id: req.params.id });
 
+    global.io.emit(`check::${user._id}`, { data: "connected " });
+
     res.json({
       Status: true,
       Message: "User rectrive successfully",
